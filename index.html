@@ -18,16 +18,19 @@
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: var(--nav-bg); border-bottom: 1px solid #1f2937; }
         .nav-left { font-size: 1.2rem; font-weight: bold; }
         .nav-right { display: flex; align-items: center; gap: 15px; }
+        .dashboard-info { font-size:0.6rem; color:#6b7280; text-align:right; font-weight:bold; }
         .social-group { display: flex; gap: 8px; }
-        .social-btn { padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; text-decoration: none; color: white; }
+        .social-btn { padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; text-decoration: none; color: white; transition: 0.3s; }
         .btn-blog { background: #15b358; }
         .btn-insta { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); }
 
-        #main-content { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 25px; }
+        #main-content { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 25px; min-height: 100vh; }
 
+        /* 스토리 박스 */
         .story-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border: 1px solid #1f2937; }
         .guide { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin-top: 10px; font-size: 0.9rem; border-left: 4px solid #3b82f6; color: #ccc; }
 
+        /* 단서 창 */
         #clue-panel { background: rgba(39, 174, 96, 0.05); border: 1px solid var(--success); border-radius: 12px; padding: 15px; }
         #clue-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-top: 10px; }
         .clue-item { background: var(--success); padding: 10px; border-radius: 6px; font-size: 0.85rem; }
@@ -38,18 +41,31 @@
         #cell-main-img { width: 100%; height: auto; max-height: 70vh; object-fit: contain; display: block; }
         .label-hitbox { position: absolute; background: rgba(255,255,255,0); cursor: pointer; z-index: 30; }
 
-        /* 진범 지목 구역 (모바일 최적화) */
+        /* 진범 지목 구역 */
         #culprit-area { background: #0f172a; padding: 25px; border-radius: 15px; border: 2px solid var(--accent); text-align: center; margin-bottom: 40px; }
         .input-group { display: flex; gap: 10px; max-width: 500px; margin: 15px auto 0; }
-        #final-answer { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #374151; background: #000; color: white; min-width: 0; }
+        #final-answer { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #374151; background: #000; color: white; min-width: 0; outline: none; }
         #btn-catch { background: var(--accent); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; }
 
-        /* 모바일 대응 미디어 쿼리 */
-        @media (max-width: 600px) {
-            .input-group { flex-direction: column; } /* 세로 정렬로 버튼 튀어나감 방지 */
-            #btn-catch { width: 100%; }
-            .nav-left { font-size: 1rem; }
-            .dashboard-info { display: none; }
+        /* 푸터 설정 (반응형) */
+        footer {
+            border-top: 1px solid #1f2937;
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: row; /* 기본 가로 정렬 */
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contact-link {
+            color: #3b82f6;
+            font-weight: bold;
+            text-decoration: underline dotted;
+            cursor: pointer;
         }
 
         /* 팝업 모달 */
@@ -58,8 +74,14 @@
         .modal-body { background: white; width: 95%; max-width: 700px; max-height: 85vh; border-radius: 20px; position: relative; overflow-y: auto; padding: 25px; color: #111; }
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: #333; font-weight: bold; z-index: 10; }
 
-        footer { border-top: 1px solid #1f2937; padding: 30px 20px; text-align: center; color: var(--text-gray); font-size: 0.85rem; }
-        .contact-link { color: #3b82f6; font-weight: bold; text-decoration: underline dotted; cursor: pointer; margin-left: 8px; }
+        /* 모바일 대응 (600px 이하) */
+        @media (max-width: 600px) {
+            .input-group { flex-direction: column; }
+            #btn-catch { width: 100%; }
+            footer { flex-direction: column; gap: 8px; } /* 푸터 줄바꿈 */
+            .nav-left { font-size: 1rem; }
+            .dashboard-info { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -67,7 +89,7 @@
 <nav class="top-nav">
     <div class="nav-left">🧬 BioLogist Investigation</div>
     <div class="nav-right">
-        <div class="dashboard-info" style="font-size:0.6rem; color:#6b7280; text-align:right; font-weight:bold;">EDUCATION DASHBOARD<br>BY BIOLOGIST</div>
+        <div class="dashboard-info">EDUCATION DASHBOARD<br>BY BIOLOGIST</div>
         <div class="social-group">
             <a href="http://blog.naver.com/biologue_" class="social-btn btn-blog" target="_blank">Blog</a>
             <a href="https://www.instagram.com/biologist_logue" class="social-btn btn-insta" target="_blank">Insta</a>
@@ -78,7 +100,7 @@
 <div id="main-content">
     <div class="story-box">
         <h2 style="margin:0; color:#3b82f6;">🔬 사라진 인슐린: 세포 내 배달 사고</h2>
-<p><strong>사건 발생:</strong> 췌장 세포에서 생성된 '인슐린' 단백질이 혈관으로 나가지 못하고 세포 내부에서 실종되었습니다! 인슐린은 원래 세포 밖으로 분비되어야 하지만, 어딘가에서 배송 사고가 발생한 것으로 보입니다.</p>
+        <p><strong>사건 발생:</strong> 췌장 세포에서 생성된 '인슐린' 단백질이 혈관으로 나가지 못하고 세포 내부에서 실종되었습니다! 인슐린은 원래 세포 밖으로 분비되어야 하지만, 어딘가에서 배송 사고가 발생한 것으로 보입니다.</p>
         <div class="guide">
             <strong>[수사 방법]</strong> 소기관 이름을 클릭해 단서를 수집하고 범인을 검거하세요!
         </div>
@@ -92,7 +114,6 @@
     <div id="viewport">
         <div id="cell-image-container">
             <img src="1101.png" id="cell-main-img">
-            <!-- 클릭 영역 히트박스 -->
             <div class="label-hitbox" style="top: 13%; left: 10%; width: 15%; height: 6%;" onclick="openInvestigate('nucleus', 1.6, 48, 40)"></div>
             <div class="label-hitbox" style="top: 36%; left: 2%; width: 20%; height: 6%;" onclick="openInvestigate('rer', 1.8, 45, 55)"></div>
             <div class="label-hitbox" style="top: 52%; left: 2%; width: 20%; height: 6%;" onclick="openInvestigate('ser', 1.8, 40, 50)"></div>
@@ -114,52 +135,16 @@
     </div>
 </div>
 
-<!-- 문의하기 팝업 (신규 라이브리 위젯 적용) -->
+<!-- 문의하기 팝업 -->
 <div id="comment-modal" class="modal-overlay">
     <div class="modal-body">
         <span class="close-modal" onclick="toggleComments(false)">×</span>
         <h3 style="margin-top:0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px;">💬 수사 보고 및 문의</h3>
         <div style="margin-top: 20px;">
-            <!-- 신규 태그 삽입 -->
             <livere-comment client-id="eFBaJHd7H8ar803qQ8ak"></livere-comment>
         </div>
     </div>
 </div>
-
-footer {
-    border-top: 1px solid #1f2937;
-    padding: 30px 20px;
-    text-align: center;
-    color: var(--text-gray);
-    font-size: 0.85rem;
-    
-    /* 기본적으로 가로 정렬 */
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-/* 모바일 화면(600px 이하) 전용 설정 */
-@media (max-width: 600px) {
-    footer {
-        flex-direction: column; /* 세로로 쌓기 */
-        gap: 5px; /* 줄 사이 간격 좁히기 */
-    }
-    
-    footer p {
-        margin: 0; /* p 태그 기본 여백 제거 */
-    }
-}
-
-.contact-link {
-    color: #3b82f6;
-    font-weight: bold;
-    text-decoration: underline dotted;
-    cursor: pointer;
-}
-
 
 <!-- 퀴즈 모달 -->
 <div id="modal-quiz" class="modal-overlay">
@@ -174,8 +159,12 @@ footer {
     </div>
 </div>
 
+<footer>
+    <span>© Copyright 2026 All rights reserved by BioLogist</span>
+    <span class="contact-link" onclick="toggleComments(true)">문의하기 ></span>
+</footer>
+
 <script>
-    // 게임 데이터
     const orgData = {
         nucleus: { name: "핵", q: "DNA를 mRNA로 복사하는 과정은?", a: "전사", clue: "핵: 설계도는 정상 발행되었습니다." },
         rer: { name: "거친면 소포체", q: "리보솜이 붙어 있어 단백질 통로 역할을 하는 이곳은?", a: "소포체", clue: "소포체: 단백질이 정상 이동했습니다." },
@@ -235,7 +224,6 @@ footer {
         }
     }
 
-    // 신규 라이브리 위젯 팝업 제어
     function toggleComments(show) {
         const modal = document.getElementById('comment-modal');
         if(show) modal.classList.add('active');
