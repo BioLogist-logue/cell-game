@@ -126,10 +126,40 @@
     </div>
 </div>
 
-<footer>
-    <span>© Copyright 2026 All rights reserved by BioLogist</span>
-    <span class="contact-link" onclick="toggleComments(true)">문의하기 ></span>
-</footer>
+footer {
+    border-top: 1px solid #1f2937;
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    
+    /* 기본적으로 가로 정렬 */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 모바일 화면(600px 이하) 전용 설정 */
+@media (max-width: 600px) {
+    footer {
+        flex-direction: column; /* 세로로 쌓기 */
+        gap: 5px; /* 줄 사이 간격 좁히기 */
+    }
+    
+    footer p {
+        margin: 0; /* p 태그 기본 여백 제거 */
+    }
+}
+
+.contact-link {
+    color: #3b82f6;
+    font-weight: bold;
+    text-decoration: underline dotted;
+    cursor: pointer;
+}
+
 
 <!-- 퀴즈 모달 -->
 <div id="modal-quiz" class="modal-overlay">
