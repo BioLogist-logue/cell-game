@@ -20,7 +20,7 @@
         .nav-right { display: flex; align-items: center; gap: 15px; }
         .dashboard-info { font-size:0.6rem; color:#6b7280; text-align:right; font-weight:bold; }
         .social-group { display: flex; gap: 8px; }
-        .social-btn { padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; text-decoration: none; color: white; transition: 0.3s; }
+        .social-btn { padding: 6px 14px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; text-decoration: none; color: white; transition: 0.3s; }
         .btn-blog { background: #15b358; }
         .btn-insta { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); }
 
@@ -55,7 +55,7 @@
             color: var(--text-gray);
             font-size: 0.85rem;
             display: flex;
-            flex-direction: row; /* 기본 가로 정렬 */
+            flex-direction: row;
             justify-content: center;
             align-items: center;
             gap: 15px;
@@ -78,12 +78,13 @@
         @media (max-width: 600px) {
             .input-group { flex-direction: column; }
             #btn-catch { width: 100%; }
-            footer { flex-direction: column; gap: 8px; } /* 푸터 줄바꿈 */
+            footer { flex-direction: column; gap: 8px; }
             .nav-left { font-size: 1rem; }
             .dashboard-info { display: none; }
         }
     </style>
 </head>
+
 <body>
 
 <nav class="top-nav">
@@ -159,6 +160,15 @@
     </div>
 </div>
 
+<!-- 커스텀 알림창 (Custom Alert) - 바디 안쪽으로 이동 -->
+<div id="custom-alert" class="modal-overlay">
+    <div class="modal-body" style="max-width:350px; text-align: center;">
+        <h3 id="alert-title" style="margin-top:0; color: #e74c3c;">🚨 수사 보고</h3>
+        <p id="alert-message" style="color: #333; margin-bottom: 20px; line-height: 1.5;"></p>
+        <button onclick="closeAlert()" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">확인</button>
+    </div>
+</div>
+
 <footer>
     <span>© Copyright 2026 All rights reserved by BioLogist</span>
     <span class="contact-link" onclick="toggleComments(true)">문의하기 ></span>
@@ -190,6 +200,28 @@
             document.getElementById('m-input-wrap').style.display = orgData[key].a ? 'block' : 'none';
             document.getElementById('modal-quiz').classList.add('active');
         }, 500);
+    } // <-- 누락된 괄호 추가됨
+
+    function closeInvestigate() {
+        document.getElementById('cell-image-container').style.transform = "scale(1) translate(0,0)";
+        document.getElementById('modal-quiz').classList.remove('active');
+        document.getElementById('m-input').value = "";
+    }
+
+    function toggleComments(show) {
+        const modal = document.getElementById('comment-modal');
+        if(show) modal.classList.add('active');
+        else modal.classList.remove('active');
+    }
+
+    function customAlert(msg, title = "🚨 수사 보고") {
+        document.getElementById('alert-title').innerText = title;
+        document.getElementById('alert-message').innerText = msg;
+        document.getElementById('custom-alert').classList.add('active');
+    }
+
+    function closeAlert() {
+        document.getElementById('custom-alert').classList.remove('active');
     }
 
     function confirmAnswer() {
@@ -201,33 +233,29 @@
                 item.innerText = `✅ ${orgData[currentKey].clue}`;
                 document.getElementById('clue-container').prepend(item);
             }
-            alert("단서 확보!");
+            customAlert("증거를 성공적으로 확보했습니다!", "✅ 수사 진전");
             closeInvestigate();
-        } else { alert("오답입니다."); }
-    }
-
-    function closeInvestigate() {
-        document.getElementById('cell-image-container').style.transform = "scale(1) translate(0,0)";
-        document.getElementById('modal-quiz').classList.remove('active');
-        document.getElementById('m-input').value = "";
+        } else { 
+            customAlert("정확한 키워드가 아닙니다. 다시 추리해 보세요.");
+        }
     }
 
     function guessCulprit() {
-        if (document.getElementById('final-answer').value.trim() === "골지체") {
-            alert("🎊 정답입니다! 수사관님, 사건을 해결하셨군요! 범인은 분류 실수를 저지른 골지체였습니다.");
+        const ans = document.getElementById('final-answer').value.trim();
+        if (ans === "골지체") {
+            alert("🎊 정답! 범인은 골지체였습니다. 본부로 연행합니다!");
             location.reload();
         } else {
             tries--;
             document.getElementById('tries').innerText = tries;
-            if (tries <= 0) { alert("수사 실패! 범인은 골지체였습니다."); location.reload(); }
-            else { alert("틀렸습니다! 증거를 더 수집하여 다시 추리해 보세요."); }
+            if (tries <= 0) { 
+                customAlert("수사 기회를 모두 소진했습니다. 범인은 골지체였습니다.");
+                setTimeout(() => location.reload(), 2000); 
+            }
+            else { 
+                customAlert(`틀렸습니다! 범인은 아직 세포 어딘가에 숨어있습니다. (남은 기회: ${tries}회)`); 
+            }
         }
-    }
-
-    function toggleComments(show) {
-        const modal = document.getElementById('comment-modal');
-        if(show) modal.classList.add('active');
-        else modal.classList.remove('active');
     }
 </script>
 </body>
