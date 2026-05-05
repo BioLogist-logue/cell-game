@@ -7,110 +7,93 @@
     <style>
         :root { 
             --primary: #2c3e50; --accent: #e74c3c; --success: #27ae60; 
-            --bg: #030712; --nav-bg: #0a0f1e; --text-gray: #6b7280;
+            --bg: #030712; --nav-bg: #0a0f1e; --text-gray: #9ca3af;
         }
+        * { box-sizing: border-box; } /* 요소들이 튀어나가지 않게 고정 */
         body { margin: 0; font-family: 'Pretendard', sans-serif; background: var(--bg); color: white; overflow-x: hidden; }
 
-        /* [기존 상단 네비바 유지] */
+        /* 상단 네비바 */
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: var(--nav-bg); border-bottom: 1px solid #1f2937; }
         .nav-left { font-size: 1.4rem; font-weight: bold; letter-spacing: -0.5px; }
         .nav-right { text-align: right; display: flex; align-items: center; gap: 20px; }
         .dashboard-info { font-size: 0.7rem; color: #9ca3af; line-height: 1.2; text-transform: uppercase; font-weight: bold; }
         .social-group { display: flex; gap: 8px; }
-        .social-btn { padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; text-decoration: none; color: white; display: flex; align-items: center; gap: 5px; }
+        .social-btn { padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; text-decoration: none; color: white; display: flex; align-items: center; gap: 5px; transition: opacity 0.3s; }
+        .social-btn:hover { opacity: 0.8; }
         .btn-blog { background: #15b358; }
         .btn-insta { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
 
-        #main-content { max-width: 1200px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; min-height: 100vh; }
+        #main-content { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 30px; min-height: 100vh; }
 
-        /* [기존 게임 UI 생략... 동일 유지] */
-        .story-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border: 1px solid #1f2937; }
-        #clue-panel { background: rgba(39, 174, 96, 0.05); border: 1px solid var(--success); border-radius: 12px; padding: 15px; }
-        #clue-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; margin-top: 10px; }
-        .clue-item { background: var(--success); padding: 10px; border-radius: 6px; font-size: 0.85rem; }
+        /* 스토리 박스 */
+        .story-box { background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid #1f2937; }
+        .story-box h2 { margin-top: 0; color: #3b82f6; font-size: 1.4rem; }
+        .guide { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 0.9rem; color: #aaa; border-left: 4px solid #3b82f6; }
+
+        /* 단서 창 */
+        #clue-panel { background: rgba(39, 174, 96, 0.05); border: 1px solid var(--success); border-radius: 12px; padding: 20px; }
+        #clue-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-top: 15px; }
+        .clue-item { background: var(--success); padding: 12px; border-radius: 6px; font-size: 0.85rem; line-height: 1.4; }
+
+        /* 세포 맵 뷰포트 */
         #viewport { position: relative; width: 100%; border-radius: 15px; overflow: hidden; background: #000; box-shadow: 0 0 40px rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; }
         #cell-image-container { position: relative; transition: transform 0.8s ease; transform-origin: center; width: 100%; }
-        #cell-main-img { width: 100%; height: auto; display: block; max-height: 80vh; object-fit: contain; }
+        #cell-main-img { width: 100%; height: auto; display: block; max-height: 75vh; object-fit: contain; }
         .label-hitbox { position: absolute; background: rgba(255,255,255,0); cursor: pointer; border-radius: 6px; z-index: 30; }
-        #culprit-area { background: #111827; padding: 25px; border-radius: 15px; border: 2px solid var(--accent); text-align: center; margin-bottom: 50px; }
-        .input-group { display: flex; gap: 10px; max-width: 500px; margin: 15px auto 0; }
-        #final-answer { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #374151; background: #000; color: white; }
-        #btn-catch { background: var(--accent); color: white; border: none; padding: 0 25px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* [새로 추가된 푸터 디자인] */
-        footer {
-            border-top: 1px solid #111827;
-            padding: 40px 20px;
-            text-align: center;
-            background: var(--bg);
-            color: var(--text-gray);
-            font-size: 0.9rem;
-        }
-        .footer-content { display: flex; justify-content: center; align-items: center; gap: 10px; }
-        .contact-link {
-            color: #3b82f6;
-            font-weight: bold;
-            text-decoration: underline dotted;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        .contact-link:hover { color: #60a5fa; }
+        /* 진범 지목 구역 */
+        #culprit-area { background: #0f172a; padding: 30px; border-radius: 15px; border: 2px solid var(--accent); text-align: center; margin-top: 10px; margin-bottom: 60px; }
+        .input-group { display: flex; gap: 10px; max-width: 550px; margin: 20px auto 0; }
+        #final-answer { flex: 1; padding: 14px; border-radius: 8px; border: 1px solid #374151; background: #000; color: white; outline: none; }
+        #btn-catch { background: var(--accent); color: white; border: none; padding: 0 30px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+        #btn-catch:active { transform: scale(0.95); }
 
-        /* [LiveRe 팝업 모달 스타일] */
-        #comment-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: none; z-index: 1000;
-            justify-content: center; align-items: center;
-        }
-        #comment-modal.active { display: flex; }
-        .modal-body {
-            background: white; width: 95%; max-width: 700px; height: 80vh;
-            border-radius: 20px; position: relative; overflow-y: auto; padding: 20px;
-        }
-        .close-modal {
-            position: absolute; top: 15px; right: 20px;
-            font-size: 24px; color: #333; cursor: pointer; font-weight: bold;
-        }
+        /* 푸터 */
+        footer { border-top: 1px solid #1f2937; padding: 40px 20px; text-align: center; color: var(--text-gray); font-size: 0.9rem; margin-top: auto; }
+        .contact-link { color: #3b82f6; font-weight: bold; text-decoration: underline dotted; cursor: pointer; margin-left: 10px; }
 
-        /* 퀴즈 모달 (기존 동일) */
-        #modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background: white; color: #111; padding: 25px; border-radius: 15px; display: none; z-index: 100; }
-        #modal.active { display: block; }
+        /* 팝업 모달 공통 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: none; z-index: 1000; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-body { background: white; width: 95%; max-width: 700px; max-height: 85vh; border-radius: 20px; position: relative; overflow-y: auto; padding: 30px; color: #111; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 28px; color: #333; cursor: pointer; }
+
+        /* 퀴즈 전용 모달 */
+        #modal { width: 90%; max-width: 400px; padding: 25px; }
         .m-btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<!-- 상단 네비바 -->
 <nav class="top-nav">
     <div class="nav-left">🧬 BioLogist Investigation</div>
     <div class="nav-right">
         <div class="dashboard-info">Education Dashboard<br>By BioLogist</div>
         <div class="social-group">
-            <a href="블로그주소" class="http://blog.naver.com/biologue_">📝 Blog</a>
-            <a href="인스타주소" class="https://www.instagram.com/biologist_logue">📸 Insta</a>
+            <a href="http://blog.naver.com/biologue_" class="social-btn btn-blog" target="_blank">📝 Blog</a>
+            <a href="https://www.instagram.com/biologist_logue" class="social-btn btn-insta" target="_blank">📸 Insta</a>
         </div>
     </div>
 </nav>
 
 <div id="main-content">
-    <!-- 사건 브리핑, 단서창, 게임 뷰포트, 범인 지목 등 기존 내용 동일 -->
     <div class="story-box">
         <h2>🔬 사라진 인슐린: 세포 내 배달 사고</h2>
-        <p><strong>사건 발생:</strong> 췌장 세포에서 생성된 '인슐린' 단백질이 혈관으로 나가지 못하고 세포 내부에서 실종되었습니다! 인슐린은 원래 세포 밖으로 분비되어야 하지만, 어딘가에서 배송 사고가 발생한 것으로 보입니다.</p>
+        <p><strong>사건 발생:</strong> 췌장 세포에서 생성된 '인슐린' 단백질이 혈관으로 나가지 못하고 실종되었습니다! 세포 소기관 어딘가에서 치명적인 배송 사고가 발생한 것으로 보입니다.</p>
         <div class="guide">
-            <strong>[수사 방법]</strong> 그림 주변의 <strong>소기관 이름</strong>을 클릭하여 확대 수사하세요. 퀴즈를 풀면 단서를 얻을 수 있습니다. 모든 단서를 모아 범인(사고가 발생한 소기관)을 지목하세요!
-    </div>
+            <strong>[수사 방법]</strong> 그림 주변의 <strong>소기관 이름</strong>을 클릭하여 확대 수사하세요. 정답을 맞히면 중요한 단서를 얻습니다. 모든 증거를 조합해 범인을 검거하세요!
+        </div>
+    </div> <!-- 닫는 태그 누락 수정됨 -->
 
     <div id="clue-panel">
-        <strong style="color: var(--success);">[수사 기록 현황]</strong>
+        <strong style="color: var(--success); font-size: 1.1rem;">[📋 확보된 수사 기록]</strong>
         <div id="clue-container"></div>
     </div>
 
     <div id="viewport">
         <div id="cell-image-container">
             <img src="1101.png" id="cell-main-img">
-            <!-- 소기관 클릭 레이블들 (이전 버전과 동일) -->
+            <!-- 클릭 히트박스 -->
             <div class="label-hitbox" style="top: 13%; left: 10%; width: 15%; height: 6%;" onclick="openInvestigate('nucleus', 1.6, 48, 40)"></div>
             <div class="label-hitbox" style="top: 36%; left: 2%; width: 20%; height: 6%;" onclick="openInvestigate('rer', 1.8, 45, 55)"></div>
             <div class="label-hitbox" style="top: 52%; left: 2%; width: 20%; height: 6%;" onclick="openInvestigate('ser', 1.8, 40, 50)"></div>
@@ -124,65 +107,53 @@
     </div>
 
     <div id="culprit-area">
-        <h3 style="margin:0; color: var(--accent);">🚨 진범 지목 (기회: <span id="tries">3</span>회)</h3>
+        <h3 style="margin:0; color: var(--accent); font-size: 1.3rem;">🚨 진범 검거 (남은 기회: <span id="tries">3</span>회)</h3>
         <div class="input-group">
-            <input type="text" id="final-answer" placeholder="범인인 소기관의 이름을 입력하세요...">
-            <button id="btn-catch" onclick="guessCulprit()">검거 시작</button>
+            <input type="text" id="final-answer" placeholder="사고의 주범인 소기관은 누구입니까?">
+            <button id="btn-catch" onclick="guessCulprit()">지목하기</button>
         </div>
     </div>
 </div>
 
-<!-- 퀴즈 모달 (기존 동일) -->
-<div id="modal">
-    <h3 id="m-title"></h3>
-    <p id="m-question"></p>
-    <div id="m-input-wrap">
-        <input type="text" id="m-input" style="width:100%; padding:10px; box-sizing:border-box; margin-bottom:10px;">
-        <button class="m-btn" style="background:var(--primary); color:white;" onclick="confirmAnswer()">단서 확보</button>
+<!-- 퀴즈 모달 -->
+<div id="modal-overlay-quiz" class="modal-overlay">
+    <div id="modal" class="modal-body">
+        <h3 id="m-title" style="margin-top:0"></h3>
+        <p id="m-question" style="line-height:1.5;"></p>
+        <div id="m-input-wrap">
+            <input type="text" id="m-input" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:8px;">
+            <button class="m-btn" style="background:var(--primary); color:white;" onclick="confirmAnswer()">단서 확보</button>
+        </div>
+        <button class="m-btn" style="background:#eee; color:#333;" onclick="closeInvestigate()">수사 중단</button>
     </div>
-    <button class="m-btn" style="background:#eee; color:#333;" onclick="closeInvestigate()">수사 중단</button>
 </div>
 
-<!-- [문의하기 LiveRe 팝업 모달] -->
-<div id="comment-modal">
+<!-- 문의하기 LiveRe 팝업 -->
+<div id="comment-modal" class="modal-overlay">
     <div class="modal-body">
         <span class="close-modal" onclick="toggleComments(false)">×</span>
-        <h3 style="color: #333; margin-bottom: 20px;">💬 수사 보고 및 문의</h3>
-        <!-- LiveRe City 설치 코드 -->
-        <div id="lv-container" data-id="city" data-uid="VmbvXdOPKvdhtL3IdAFC==">
-            <script type="text/javascript">
-                (function(d, s) {
-                    var j, e = d.getElementsByTagName(s)[0];
-                    if (typeof LivereTower === 'function') { return; }
-                    j = d.createElement(s); j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-                    j.async = true; e.parentNode.insertBefore(j, e);
-                })(document, 'script');
-            </script>
-            <noscript>라이브리 댓글 작성을 위해 자바스크립트를 활성화 해주세요</noscript>
-        </div>
+        <h3 style="margin-bottom: 20px;">💬 수사 보고 및 문의</h3>
+        <div id="lv-container" data-id="city" data-uid="VmbvXdOPKvdhtL3IdAFC=="></div>
     </div>
 </div>
 
-<!-- 푸터 구역 -->
 <footer>
-    <div class="footer-content">
-        <span>© Copyright 2026 All rights reserved by BioLogist</span>
-        <span class="contact-link" onclick="toggleComments(true)">문의하기 ></span>
-    </div>
+    <span>© Copyright 2026 All rights reserved by BioLogist</span>
+    <span class="contact-link" onclick="toggleComments(true)">문의하기 ></span>
 </footer>
 
 <script>
-    /* [기존 게임 로직 동일 유지] */
+    // 데이터 및 게임 로직
     const orgData = {
-        nucleus: { name: "핵", q: "DNA를 mRNA로 복사하는 과정의 이름은?", a: "전사", clue: "인슐린 설계도는 정상 발행되었습니다." },
-        rer: { name: "거친면 소포체", q: "단백질 통로 역할을 하는 이곳은?", a: "소포체", clue: "생산된 단백질이 통로를 통해 무사히 이동했습니다." },
-        ser: { name: "매끈면 소포체", q: "지질 합성 및 독성 해독을 담당하는 곳은?", a: "매끈면 소포체", clue: "지질 공정은 이번 사건과 무관합니다." },
-        mito: { name: "마이토콘드리아", q: "에너지를 생산하는 이 소기관은?", a: "마이토콘드리아", clue: "에너지는 충분합니다." },
-        lyso: { name: "리소좀", q: "세포 내 소화를 담당하는 곳은?", a: "리소좀", clue: "리소좀 내부에서 파괴된 인슐린 발견!" },
-        ribo: { name: "라이보솜", q: "단백질을 합성하는 소기관은?", a: "라이보솜", clue: "인슐린은 공장에서 아주 활발히 생산되었습니다." },
-        golgi: { name: "골지체", q: "단백질을 분류하고 최종 배송지를 결정하는 곳은?", a: "골지체", clue: "배송 라벨이 '분해'로 잘못 출력됨!" },
-        membrane: { name: "세포막", q: "물질 출입을 조절하는 경계는?", a: "세포막", clue: "세포막 쪽으로 택배가 도착하지 않았습니다." },
-        cytoplasm: { name: "세포질", q: "소기관이 떠 있는 공간은?", a: null, clue: null }
+        nucleus: { name: "핵", q: "DNA를 mRNA로 복사하는 과정의 이름은?", a: "전사", clue: "핵: 인슐린 설계도는 정상 발행되어 세포질로 나갔습니다." },
+        rer: { name: "거친면 소포체", q: "리보솜이 붙어 있어 단백질 운반을 돕는 이 곳은?", a: "소포체", clue: "소포체: 생산된 단백질이 통로를 통해 무사히 이동했습니다." },
+        ser: { name: "매끈면 소포체", q: "지질 합성 및 독성 해독을 담당하는 이 곳은?", a: "매끈면 소포체", clue: "매끈면 소포체: 이번 인슐린 배송 사고와는 무관해 보입니다." },
+        mito: { name: "마이토콘드리아", q: "세포 호흡을 통해 에너지를 생산하는 이 소기관은?", a: "마이토콘드리아", clue: "마이토콘드리아: 세포 내 에너지는 아주 충분합니다." },
+        lyso: { name: "리소좀", q: "세포 내 소화를 담당하는 이 주머니의 이름은?", a: "리소좀", clue: "리소좀: [중요] 리소좀 내부에서 파괴된 인슐린 조각들이 발견되었습니다!" },
+        ribo: { name: "라이보솜", q: "단백질을 합성하는 알갱이 모양의 소기관은?", a: "라이보솜", clue: "라이보솜: 인슐린 생산량은 아주 활발했습니다." },
+        golgi: { name: "골지체", q: "단백질을 최종 분류하고 배송지를 지정하는 이 곳은?", a: "골지체", clue: "골지체: [결정적] 배송 라벨이 '분비'가 아닌 '분해'로 잘못 출력되었습니다!" },
+        membrane: { name: "세포막", q: "물질 출입을 조절하는 세포의 경계는?", a: "세포막", clue: "세포막: 외부 혈관 쪽으로 소낭이 하나도 도착하지 않았습니다." },
+        cytoplasm: { name: "세포질", q: "설명: 소기관들이 떠 있는 이 공간은?", a: null, clue: null }
     };
 
     let tries = 3;
@@ -191,18 +162,18 @@
 
     function openInvestigate(key, zoom, x, y) {
         currentKey = key;
-        const container = document.getElementById('cell-image-container');
-        container.style.transform = `scale(${zoom}) translate(${50 - x}%, ${50 - y}%)`;
+        document.getElementById('cell-image-container').style.transform = `scale(${zoom}) translate(${50 - x}%, ${50 - y}%)`;
         setTimeout(() => {
             document.getElementById('m-title').innerText = orgData[key].name;
-            document.getElementById('m-question').innerText = orgData[key].q || "단서가 없는 평온한 곳입니다.";
+            document.getElementById('m-question').innerText = orgData[key].q || "특별한 단서가 없는 평화로운 공간입니다.";
             document.getElementById('m-input-wrap').style.display = orgData[key].a ? 'block' : 'none';
-            document.getElementById('modal').classList.add('active');
-        }, 800);
+            document.getElementById('modal-overlay-quiz').classList.add('active');
+        }, 600);
     }
 
     function confirmAnswer() {
-        if (document.getElementById('m-input').value.trim() === orgData[currentKey].a) {
+        const val = document.getElementById('m-input').value.trim();
+        if (val === orgData[currentKey].a) {
             if (!cluesFound.has(currentKey)) {
                 cluesFound.add(currentKey);
                 const item = document.createElement('div');
@@ -210,34 +181,48 @@
                 item.innerText = `✅ ${orgData[currentKey].clue}`;
                 document.getElementById('clue-container').prepend(item);
             }
-            alert("증거 수집 완료!");
+            alert("단서를 확보했습니다!");
             closeInvestigate();
-        } else { alert("오답입니다."); }
+        } else { alert("정확한 키워드를 입력해 주세요."); }
     }
 
     function closeInvestigate() {
         document.getElementById('cell-image-container').style.transform = "scale(1) translate(0,0)";
-        document.getElementById('modal').classList.remove('active');
+        document.getElementById('modal-overlay-quiz').classList.remove('active');
         document.getElementById('m-input').value = "";
     }
 
     function guessCulprit() {
-        if (document.getElementById('final-answer').value.trim() === "골지체") {
-            alert("🎊 정답! 범인은 골지체였습니다.");
+        const ans = document.getElementById('final-answer').value.trim();
+        if (ans === "골지체") {
+            alert("🎊 정답! 배송지 지정 오류를 낸 '골지체'가 범인이었습니다! 수사를 성공적으로 마쳤습니다.");
             location.reload();
         } else {
             tries--;
             document.getElementById('tries').innerText = tries;
-            if (tries <= 0) { alert("범인은 골지체였습니다."); location.reload(); }
-            else { alert("틀렸습니다!"); }
+            if (tries <= 0) { alert("수사 실패! 범인은 골지체였습니다."); location.reload(); }
+            else { alert("틀렸습니다! 다시 추리해 보세요."); }
         }
     }
 
-    /* [문의하기 팝업 제어 로직] */
+    // LiveRe 팝업 제어
     function toggleComments(show) {
         const modal = document.getElementById('comment-modal');
-        if(show) modal.classList.add('active');
-        else modal.classList.remove('active');
+        if(show) {
+            modal.classList.add('active');
+            // LiveRe 다시 로드 (안 뜰 때 대비)
+            if (typeof LivereTower !== 'undefined') {
+                LivereTower.init();
+            } else {
+                (function(d, s) {
+                    var j, e = d.getElementsByTagName(s)[0];
+                    j = d.createElement(s); j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                    j.async = true; e.parentNode.insertBefore(j, e);
+                })(document, 'script');
+            }
+        } else {
+            modal.classList.remove('active');
+        }
     }
 </script>
 </body>
