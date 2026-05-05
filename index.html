@@ -102,7 +102,7 @@
         <h2 style="margin:0; color:#3b82f6;">🔬 사라진 인슐린: 세포 내 배달 사고</h2>
         <p><strong>사건 발생:</strong> 췌장 세포에서 생성된 '인슐린' 단백질이 혈관으로 나가지 못하고 세포 내부에서 실종되었습니다! 인슐린은 원래 세포 밖으로 분비되어야 하지만, 어딘가에서 배송 사고가 발생한 것으로 보입니다.</p>
         <div class="guide">
-            <strong>[수사 방법]</strong> 소기관 이름을 클릭해 단서를 수집하고 범인을 검거하세요!
+            <strong>[수사 방법]</strong> 당신은 세포 수사관입니다. 소기관 이름을 클릭해 단서를 수집하고 범인을 검거하세요!
         </div>
     </div>
 
@@ -174,7 +174,7 @@
         ribo: { name: "라이보솜", q: "단백질을 합성하는 소기관은?", a: "라이보솜", clue: "라이보솜: 인슐린 생산은 활발했습니다." },
         golgi: { name: "골지체", q: "단백질 분류 및 배송지를 지정하는 곳은?", a: "골지체", clue: "골지체: 배송 라벨이 '분해'로 잘못 출력됨!" },
         membrane: { name: "세포막", q: "물질 출입을 조절하는 경계는?", a: "세포막", clue: "세포막: 외부로 나가는 택배가 없습니다." },
-        cytoplasm: { name: "세포질", q: "소기관이 떠 있는 공간은?", a: null, clue: null }
+        cytoplasm: { name: "세포질", q: "소기관들이 떠 있는 공간입니다. 너무 넓어 별다른 단서가 보이지 않습니다.", a: null, clue: null }
     };
 
     let tries = 3;
@@ -214,13 +214,13 @@
 
     function guessCulprit() {
         if (document.getElementById('final-answer').value.trim() === "골지체") {
-            alert("🎊 정답! 범인은 골지체였습니다.");
+            alert("🎊 정답입니다! 수사관님, 사건을 해결하셨군요! 범인은 분류 실수를 저지른 골지체였습니다.");
             location.reload();
         } else {
             tries--;
             document.getElementById('tries').innerText = tries;
-            if (tries <= 0) { alert("실패! 범인은 골지체였습니다."); location.reload(); }
-            else { alert("틀렸습니다!"); }
+            if (tries <= 0) { alert("수사 실패! 범인은 골지체였습니다."); location.reload(); }
+            else { alert("틀렸습니다! 증거를 더 수집하여 다시 추리해 보세요."); }
         }
     }
 
